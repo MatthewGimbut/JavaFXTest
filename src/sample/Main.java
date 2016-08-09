@@ -2,6 +2,7 @@ package sample;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -11,6 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 
@@ -23,24 +25,26 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
+        //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
-        Group rootGroup = new Group();
-        Scene testScene = new Scene(rootGroup);
-        primaryStage.setScene(testScene);
+        BorderPane border = new BorderPane();
+        border.setId("green");
+        Scene scene = new Scene(border, 512, 512);
+        scene.getStylesheets().add("sample/green.css");
+        primaryStage.setScene(scene);
         Canvas canvas = new Canvas(512, 512);
-        rootGroup.getChildren().add(canvas);
+        border.getChildren().add(canvas);
+
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         ArrayList<String> input = new ArrayList<>();
 
-        testScene.setOnKeyPressed(e-> {
+        scene.setOnKeyPressed(e-> {
             String code = e.getCode().toString();
             if (!input.contains(code)) input.add(code);
         });
 
-        testScene.setOnKeyReleased(e -> {
+        scene.setOnKeyReleased(e -> {
             String code = e.getCode().toString();
             input.remove(code);
         });
